@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --watch 'src/*.ts' --watch 'src/**/*ts' --ignore 'src/*.spec.ts' --exec 'ts-node' src/index.ts",
-    "start": "npm run build && node dist/index.js",
+    "start": "nodemon src/index.ts",
     "build": "babel src/index.ts -d build --extensions '.ts'",
     "migrate": "knex migrate:latest"
   },
