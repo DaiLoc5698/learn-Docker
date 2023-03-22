@@ -68,3 +68,5 @@ app.listen(APP_PORT, APP_HOST, () => {
   console.log('VERSION 3')
   console.log(`Example app listening on http://${APP_HOST}:${APP_PORT}`)
 })
+
+export default app;
