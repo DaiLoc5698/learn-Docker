@@ -1,0 +1,52 @@
+version: '3'
+
+networks:
+  docker_pangara:
+    driver: bridge
+
+volumes:
+  mariadb:
+    driver: local
+
+services:
+  redis:
+    image: redis:7.0.9
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - /redis
+    networks:
+      - docker_pangara
+
+  mariadb:
+    image: mariadb:10.2.12
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - 'MYSQL_DATABASE=${MARIADB_DATABASE}'
+      - 'MYSQL_USER=${MARIADB_USER}'
+      - 'MYSQL_PASSWORD=${MARIADB_PASSWORD}'
+      - 'MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}'
+    volumes:
+      - /mariadb
+    networks:
+      - docker_pangara
+
+  course-service:
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - /app
+    ports:
+      - 3000:8080
+    depends_on:
+      - redis
+      - mariadb
+    links:
+      - redis
+      - mariadb
+    networks:
+      - docker_pangara
+    restart: always
